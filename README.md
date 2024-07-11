@@ -2,7 +2,7 @@
 
 ### 环境配置
 - https://gitee.com/openharmony-sig/flutter_engine
-- https://gitee.com/openharmony-sig/flutter_flutter (切换到dev分支)
+- https://gitee.com/openharmony-sig/flutter_flutter (dev分支)
 - https://gitee.com/openharmony-sig/flutter_packages
 
 ### 学习资料
