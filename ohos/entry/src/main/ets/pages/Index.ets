@@ -23,7 +23,7 @@ struct Index {
     Row() {
       Column() {
         Text(this.message)
-        Button('跳转页面1').onClick(() => {
+        Button('跳转Flutter页面1').onClick(() => {
           router.pushUrl({ url: 'pages/Page1' })
             .then(() => {
               this.message = "success"
@@ -32,7 +32,7 @@ struct Index {
               this.message = "failed"
             })
         }).margin(10)
-        Button('跳转页面2').onClick(() => {
+        Button('跳转原生页面2').onClick(() => {
           router.pushUrl({ url: 'pages/Page2' })
         })
       }.width('100%')
