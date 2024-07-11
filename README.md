@@ -6,10 +6,11 @@
 - https://gitee.com/openharmony-sig/flutter_packages
 
 ### 学习资料
-- https://developer.huawei.com/consumer/cn/training/
-- https://gitee.com/openharmony-sig/flutter_samples
-- https://wolfx.cn/docs/frontend/ohos/007-flutter-plugin
-- https://www.yuque.com/xuyisheng/ot9ge6/hg11fs9hnlcnauct
+- https://www.arkui.club/chapter7/7_4_navigator.html (ArkUI实战)
+- https://developer.huawei.com/consumer/cn/training/ (官方课程教程)
+- https://gitee.com/openharmony-sig/flutter_samples  (官方demo)
+- https://wolfx.cn/docs/frontend/ohos/007-flutter-plugin （Flutter插件开发）
+- https://www.yuque.com/xuyisheng/ot9ge6/hg11fs9hnlcnauct (Flutter鸿蒙混编)
 
 ### 三方仓库
 - https://ohpm.openharmony.cn/#/cn/home
