@@ -17,3 +17,4 @@
 
 ### 官方资料
 - https://developer.huawei.com/consumer/cn/develop/
+- https://developer.huawei.com/consumer/cn/samples/ (纯鸿蒙samples)
