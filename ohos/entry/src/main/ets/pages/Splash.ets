@@ -21,7 +21,9 @@ struct Page {
       Button('跳转登录页面').onClick(() => {
         let want: Want = {
           bundleName: 'com.example.flutter_demo',
-          abilityName: 'LoginAbility'
+          abilityName: 'LoginAbility',
+          uri: 'page/Login' // 跳转到Ability不同的page
+
         };
         // 注意区分Stage模型和FA模型的startAbility
         // 一个UiAbility至少对应一个@entry修饰的page，page类似Android中的fragment
