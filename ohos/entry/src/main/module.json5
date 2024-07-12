@@ -21,6 +21,7 @@
         "startWindowIcon": "$media:icon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
+        "removeMissionAfterTerminate": true,// 标识当前UIAbility组件销毁后，是否从任务列表中移除任务,默认false
         "launchType": "multiton",
 //        "skills": [
 //          {
@@ -42,6 +43,7 @@
         "startWindowIcon": "$media:startIcon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
+        "removeMissionAfterTerminate": true,
         "skills": [
           {
             "entities": [
@@ -60,6 +62,7 @@
         "icon": "$media:layered_image",
         "label": "$string:LoginAbility_label",
         "startWindowIcon": "$media:startIcon",
+        "removeMissionAfterTerminate": true,
         "startWindowBackground": "$color:start_window_background"
       }
     ],
