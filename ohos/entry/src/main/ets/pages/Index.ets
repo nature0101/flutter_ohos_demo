@@ -24,7 +24,7 @@ struct Index {
       Column() {
         Text(this.message)
         Button('跳转Flutter页面1').onClick(() => {
-          router.pushUrl({ url: 'pages/Page1' })
+          router.pushUrl({ url: 'pages/FlutterEmbeddingPage' })
             .then(() => {
               this.message = "success"
             })
@@ -33,7 +33,7 @@ struct Index {
             })
         }).margin(10)
         Button('跳转原生页面2').onClick(() => {
-          router.pushUrl({ url: 'pages/Page2' })
+          router.pushUrl({ url: 'pages/MainPage' })
         })
       }.width('100%')
     }.height('100%')

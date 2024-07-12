@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "flutter_demo"
+    },
+    {
+      "name": "SplashAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "SplashAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "LoginAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "LoginAbility_label",
+      "value": "label"
     }
   ]
 }

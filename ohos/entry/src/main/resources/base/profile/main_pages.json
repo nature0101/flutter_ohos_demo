@@ -1,8 +1,9 @@
 {
   "src": [
-    "pages/Index1",
     "pages/Index",
-    "pages/Page1",
-    "pages/Page2"
+    "pages/FlutterEmbeddingPage",
+    "pages/MainPage",
+    "pages/Splash",
+    "pages/Login"
   ]
 }
