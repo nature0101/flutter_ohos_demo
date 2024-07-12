@@ -9,7 +9,7 @@ struct Login {
   @State message: string = '登录页面';
   private context = getContext(this) as common.UIAbilityContext
   build() {
-    RelativeContainer() {
+    Column() {
       Text(this.message)
         .id('LoginHelloWorld')
         .fontSize(50)
@@ -42,6 +42,9 @@ struct Login {
           let message = (err as BusinessError).message;
           console.error(`startAbility failed, code is ${code}, message is ${message}`);
         }
+      }).alignRules({
+        center: { anchor: '__container__', align: VerticalAlign.Center },
+        middle: { anchor: '__container__', align: HorizontalAlign.Center }
       })
     }
     .height('100%')

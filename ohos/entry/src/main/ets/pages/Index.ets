@@ -32,6 +32,15 @@ struct Index {
               this.message = "failed"
             })
         }).margin(10)
+        Button('跳转Flutter页面2').onClick(() => {
+          router.pushUrl({ url: 'pages/FlutterEmbeddingV2Page' })
+            .then(() => {
+              this.message = "success"
+            })
+            .catch(() => {
+              this.message = "failed"
+            })
+        }).margin(10)
         Button('跳转原生页面2').onClick(() => {
           router.pushUrl({ url: 'pages/MainPage' })
         })
