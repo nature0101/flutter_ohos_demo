@@ -40,6 +40,10 @@ dependencies:
       url: https://gitee.com/openharmony-sig/flutter_packages/
       path: packages/shared_preferences/shared_preferences
       ref: master
+  pigeon:
+    git:
+      url: https://gitee.com/openharmony-sig/flutter_packages.git
+      path: packages/pigeon
 
 dev_dependencies:
   flutter_test:

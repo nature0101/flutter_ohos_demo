@@ -6,6 +6,7 @@ import { JSON } from '@kit.ArkTS';
 @Component
 struct Page {
   @State message: string = 'SplashPage';
+  // 获取上下文
   private context = getContext(this) as common.UIAbilityContext
 
   build() {

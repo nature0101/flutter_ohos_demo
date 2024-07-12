@@ -1,15 +1,23 @@
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import featureAbility from '@ohos.ability.featureAbility';
-
+// Stage模型下，每个Ability中都包含了一个Context属性
+//
 export default class SplashAbility extends UIAbility {
+
+  // 首次启动
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    let context = this.context;
   }
 
   onDestroy(): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+  }
+
+  // 非首次启动
+  onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {

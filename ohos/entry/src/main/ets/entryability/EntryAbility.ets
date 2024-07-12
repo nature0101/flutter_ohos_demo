@@ -19,11 +19,13 @@ import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
 import { UIAbility } from '@kit.AbilityKit';
+import NativePlugin from '../plugins/NativePlugin';
 
 export default class EntryAbility extends FlutterAbility {
   configureFlutterEngine(flutterEngine: FlutterEngine) {
     super.configureFlutterEngine(flutterEngine)
     GeneratedPluginRegistrant.registerWith(flutterEngine)
+    flutterEngine.getPlugins()?.add(new NativePlugin());
   }
 
   // 默认路径是’pages/Index‘
