@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
+import 'native_channel.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -33,6 +35,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  OpenNativePlugin native = OpenNativePlugin();
+  String localData = "";
 
   void _incrementCounter() {
     setState(() {
@@ -79,6 +83,24 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 50),
+            InkWell(
+              child: const Text('打开原生页面'),
+              onTap: () {
+                native.openNative("我是flutter来的数据");
+              },
+            ),
+            const SizedBox(height: 50),
+            InkWell(
+              child: Text('从原生获取的数据:${localData}'),
+              onTap: () {
+                native.getDataFromNative({"key": "flutter"}).then((value) {
+                  setState(() {
+                    localData = value ?? "";
+                  });
+                });
+              },
             ),
           ],
         ),
