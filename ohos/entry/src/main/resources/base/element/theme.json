@@ -1,0 +1,31 @@
+{
+  "theme": [
+    {
+      "name": "base",
+      "value": [
+        {
+          "name": "width",
+          "value": "wrap_content"
+        },
+        {
+          "name": "height",
+          "value": "wrap_content"
+        },
+        {
+          "name": "size",
+          "value": "25dp"
+        }
+      ]
+    },
+    {
+      "name": "child",
+      "parent": "base",
+      "value": [
+        {
+          "name": "noTitle",
+          "value": "yes"
+        }
+      ]
+    }
+  ]
+}

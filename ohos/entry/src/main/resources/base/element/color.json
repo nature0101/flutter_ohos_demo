@@ -3,6 +3,10 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "big_red",
+      "value": "#f00000"
     }
   ]
 }

@@ -11,6 +11,7 @@
 - https://gitee.com/openharmony-sig/flutter_samples/tree/master/ohos/docs (官方demo和文档)
 - https://wolfx.cn/docs/frontend/ohos/007-flutter-plugin （Flutter插件开发）
 - https://www.yuque.com/xuyisheng/ot9ge6/hg11fs9hnlcnauct (Flutter鸿蒙混编)
+- https://www.cnblogs.com/shudaoshan/p/18084271 （核心知识点62实战）
 
 ### 三方仓库
 - https://ohpm.openharmony.cn/#/cn/home
