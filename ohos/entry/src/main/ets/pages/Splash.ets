@@ -2,13 +2,47 @@ import { common, Want } from '@kit.AbilityKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
 
+class PropB {
+  code: number;
+
+  constructor(code: number) {
+    this.code = code;
+  }
+}
+
+// 创建新实例并使用给定对象初始化
+let para: Record<string, number> = { 'PropA': 47 };
+let storage: LocalStorage = new LocalStorage(para);
+storage.setOrCreate('PropB', new PropB(50));
+
+@Component
+struct Child5 {
+  // @LocalStorageProp变量装饰器与LocalStorage中的'PropA'属性建立单向绑定
+  @LocalStorageProp('PropA') childLinkNumber: number = 1;
+  // @LocalStorageLink变量装饰器与LocalStorage中的'PropB'属性建立双向绑定
+  @LocalStorageLink('PropB') childLinkObject: PropB = new PropB(0);
+
+  build() {
+    Column() {
+      Button(`Child from LocalStorage ${this.childLinkNumber}`) // 更改将同步至LocalStorage中的'PropA'以及Parent.parentLinkNumber
+        .onClick(() => {
+          this.childLinkNumber += 1;
+        })
+      Button(`Child from LocalStorage ${this.childLinkObject.code}`) // 更改将同步至LocalStorage中的'PropB'以及Parent.parentLinkObject.code
+        .onClick(() => {
+          this.childLinkObject.code += 1;
+        })
+    }
+  }
+}
+
 // 页面：只有被@Entry装饰的组件才可以调用页面的生命周期，生命周期方法：onPageShow,onPageHide,onBackPress
 // 自定义组件：@Component修饰，生命周期方法：aboutToAppear,build,onDidBuild,aboutToDisappear,后两个方法中不能更改状态变量，使用animateTo等功能
 // 整体生命周期方法：aboutToAppear-> build-> onDidBuild-> onPageShow-> onPageHide-> aboutToDisappear
 // 组件MyComponent包含一个Child组件其生命周期流程：aboutToAppear --> MyComponent build --> MyComponent onDidBuild--> Child aboutToAppear --> Child build --> Child onDidBuild --> Index onPageShow
 // 组件删除：先调用父组件aboutToDisappear,再调用子组件aboutToDisappear
 // 退出应用：执行Index onPageHide --> MyComponent aboutToDisappear --> Child aboutToDisappear
-@Entry({ routeName: '路由名字' })
+@Entry(storage)
 @Component
 struct Page {
   @State message: string = 'SplashPage';
@@ -17,9 +51,27 @@ struct Page {
   showImage: boolean = false
   private textArray: string[] = ["1", "2", "3", "4"]
 
+  // @LocalStorageLink变量装饰器与LocalStorage中的'PropA'属性建立双向绑定
+  @LocalStorageLink('PropA') parentLinkNumber: number = 1;
+  // @LocalStorageLink变量装饰器与LocalStorage中的'PropB'属性建立双向绑定
+  @LocalStorageLink('PropB') parentLinkObject: PropB = new PropB(0);
+
   build() {
     Scroll() {
       Column() {
+        Column({ space: 15 }) {
+          Button(`Parent from LocalStorage ${this.parentLinkNumber}`) // initial value from LocalStorage will be 47, because 'PropA' initialized already
+            .onClick(() => {
+              this.parentLinkNumber += 1;
+            })
+
+          Button(`Parent from LocalStorage ${this.parentLinkObject.code}`) // initial value from LocalStorage will be 50, because 'PropB' initialized already
+            .onClick(() => {
+              this.parentLinkObject.code += 1;
+            })
+          // @Component子组件自动获得对CompA LocalStorage实例的访问权限。
+          Child5()
+        }
         Text($r('app.string.SplashAbility_label'))
           .size({ width: 100, height: 120 })
           .fontColor($r('app.color.big_red'))
@@ -57,6 +109,10 @@ struct Page {
           Parent()
           Parent1()
           AnimatablePropertyExample()
+          PlayDetailPage()
+          ParentComponent3()
+          Parent4()
+          CompA()
         }
         Button('跳转登录页面').onClick(() => {
           let want: Want = {
@@ -591,21 +647,13 @@ struct Parent3 {
     Column() {
       // stateStyles 多态样式
       Button('Button1').stateStyles({
-        focused:{
+        focused: {
           .backgroundColor(Color.Pink)
         },
-        pressed:{
-
-        },
-        normal:{
-
-        },
-        disabled:{
-
-        },
-        selected:{
-
-        }
+        pressed: {},
+        normal: {},
+        disabled: {},
+        selected: {}
       })
       this.componentBuilder()
       Child3({
@@ -636,18 +684,20 @@ function fancy(fontSize: number, onClick: () => void) {
 
 // 实现动画效果
 //@AnimatableExtend 定义可动画属性，常见height,width,backgroundColor,translate属性
-@AnimatableExtend(Text) function animatableFontSize(size: number) {
+@AnimatableExtend(Text)
+function animatableFontSize(size: number) {
   .fontSize(size)
 }
 
 @Component
 struct AnimatablePropertyExample {
   @State fontSize: number = 20
+
   build() {
     Column() {
       Text("AnimatableProperty")
         .animatableFontSize(this.fontSize)
-        .animation({duration: 1000, curve: "ease"})
+        .animation({ duration: 1000, curve: "ease" })
       Button("Play")
         .onClick(() => {
           this.fontSize = this.fontSize == 20 ? 36 : 20
@@ -659,3 +709,244 @@ struct AnimatablePropertyExample {
 
 //@Require 校验构造参数，使用@Require修饰变量时，必须构造时传参
 //@Require装饰器仅用于装饰struct内的@Prop、@State、@Provide、@BuilderParam和普通变量(无状态装饰器修饰的变量)
+
+class PlayDetailViewModel {
+  coverUrl: string = '#00ff00'
+  changeCoverUrl = (model: PlayDetailViewModel) => {
+    model.coverUrl = '#00F5FF'
+  }
+}
+
+// 使用箭头函数未生效
+class PlayDetailViewModel2 {
+  coverUrl: string = '#00ff00'
+  changeCoverUrl = () => {
+    this.coverUrl = '#00F5FF';
+  }
+
+  changeCoverUrl2() {
+    this.coverUrl = '#00F5FF';
+  }
+}
+
+@Component
+struct PlayDetailPage {
+  @State vm: PlayDetailViewModel = new PlayDetailViewModel();
+  @State vm2: PlayDetailViewModel2 = new PlayDetailViewModel2();
+
+  build() {
+    Stack() {
+      Text(this.vm.coverUrl).width(100).height(100).backgroundColor(this.vm.coverUrl)
+      Row() {
+        Button('点击改变颜色')
+          .onClick(() => {
+            // 点击不能改变颜色
+            // this.vm.changeCoverUrl();
+
+            // 点击能改变颜色
+            let self = this.vm;
+            this.vm.changeCoverUrl(self)
+
+            // 点击不能改变颜色
+            // this.vm2.changeCoverUrl2()
+          })
+      }
+    }
+    .width('100%')
+    .alignContent(Alignment.Top)
+  }
+}
+
+@Component
+struct CountDownComponent {
+  // 使用@State 不起作用
+  @Prop count: number = 0;
+  costOfOneAttempt: number = 1;
+
+  build() {
+    Column() {
+      if (this.count > 0) {
+        Text(`You have ${this.count} Nuggets left`)
+      } else {
+        Text('Game over!')
+      }
+      // @Prop装饰的变量不会同步给父组件
+      Button(`Try again`).onClick(() => {
+        this.count -= this.costOfOneAttempt;
+      })
+    }
+  }
+}
+
+@Component
+struct ParentComponent3 {
+  @State countDownStartValue: number = 10;
+
+  build() {
+    Column() {
+      Text(`Grant ${this.countDownStartValue} nuggets to play.`)
+      // 父组件的数据源的修改会同步给子组件
+      Button(`+1 - Nuggets in New Game`).onClick(() => {
+        this.countDownStartValue += 1;
+      })
+      // 父组件的修改会同步给子组件
+      Button(`-1  - Nuggets in New Game`).onClick(() => {
+        this.countDownStartValue -= 1;
+      })
+
+      CountDownComponent({ count: this.countDownStartValue, costOfOneAttempt: 2 })
+    }
+  }
+}
+
+// 多层嵌套
+@Observed
+class ClassA {
+  public title: string;
+
+  constructor(title: string) {
+    this.title = title;
+  }
+}
+
+@Observed
+class ClassB {
+  public name: string;
+  public a: ClassA;
+
+  constructor(name: string, a: ClassA) {
+    this.name = name;
+    this.a = a;
+  }
+}
+
+@Component
+struct Parent4 {
+  @State votes: ClassB = new ClassB('Hello', new ClassA('world'))
+
+  build() {
+    Column() {
+      Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
+        Button('change ClassB name')
+          .width(312)
+          .height(40)
+          .margin(12)
+          .fontColor('#FFFFFF，90%')
+          .onClick(() => {
+            this.votes.name = "aaaaa"
+          })
+        Button('change ClassA title')
+          .width(312)
+          .height(40)
+          .margin(12)
+          .fontColor('#FFFFFF，90%')
+          .onClick(() => {
+            this.votes.a.title = "wwwww"
+          })
+        Text(this.votes.name)
+          .fontSize(16)
+          .margin(12)
+          .width(312)
+          .height(40)
+          .backgroundColor('#ededed')
+          .borderRadius(20)
+          .textAlign(TextAlign.Center)
+          .fontColor('#e6000000')
+          .onClick(() => {
+            this.votes.name = 'Bye'
+          })
+        Text(this.votes.a.title)
+          .fontSize(16)
+          .margin(12)
+          .width(312)
+          .height(40)
+          .backgroundColor('#ededed')
+          .borderRadius(20)
+          .textAlign(TextAlign.Center)
+          .onClick(() => {
+            this.votes.a.title = "openHarmony"
+          })
+        Child4({ vote1: this.votes.a })
+      }
+
+    }
+
+  }
+}
+
+@Component
+struct Child4 {
+  @Prop vote1: ClassA = new ClassA('');
+  @Prop value: Map<number, string> = new Map(([[0, 'a'], [1, 'b'], [2, 'c']]))
+  @Prop message:Set<number> = new Set([0,1,2,3])
+  build() {
+    Column() {
+      Text(this.vote1.title)
+        .fontSize(16)
+        .margin(12)
+        .width(312)
+        .height(40)
+        .backgroundColor('#ededed')
+        .borderRadius(20)
+        .textAlign(TextAlign.Center)
+        .onClick(() => {
+          this.vote1.title = 'Bye Bye'
+        })
+      ForEach(Array.from(this.value.entries()),(item:[number,string])=>{
+        Text(`${item[0]}`).fontSize(30)
+        Text(`${item[1]}`).fontSize(30)
+        Divider()
+      })
+    }
+  }
+}
+
+@Component
+struct CompD {
+  @Consume selectedDate: Date;
+
+  build() {
+    Column() {
+      Button(`child increase the day by 1`)
+        .onClick(() => {
+          this.selectedDate.setDate(this.selectedDate.getDate() + 1)
+        })
+      Button('child update the new date')
+        .margin(10)
+        .onClick(() => {
+          this.selectedDate = new Date('2023-09-09')
+        })
+      DatePicker({
+        start: new Date('1970-1-1'),
+        end: new Date('2100-1-1'),
+        selected: this.selectedDate
+      })
+    }
+  }
+}
+
+@Component
+struct CompA {
+  @Provide selectedDate: Date = new Date('2021-08-08')
+
+  build() {
+    Column() {
+      Button('parent increase the day by 1')
+        .margin(10)
+        .onClick(() => {
+          this.selectedDate.setDate(this.selectedDate.getDate() + 1)
+        })
+      Button('parent update the new date')
+        .margin(10)
+        .onClick(() => {
+          this.selectedDate = new Date('2023-07-07')
+        })
+      DatePicker({
+        start: new Date('1970-1-1'),
+        end: new Date('2100-1-1'),
+        selected: this.selectedDate
+      })
+      CompD()
+    }
+  }
+}
